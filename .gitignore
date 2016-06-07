@@ -10,7 +10,7 @@ Gemfile.lock
 Puppetfile.lock
 
 # Fixture modules loaded by librarian-puppet
-/spec/fixtures/modules/
+/spec/fixtures/modules/*
 !/spec/fixtures/modules/traefik
 
 # Puppet
