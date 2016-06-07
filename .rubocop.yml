@@ -1,0 +1,16 @@
+AllCops:
+  TargetRubyVersion: 1.9
+  Exclude:
+    - 'modules/**/*'
+    - 'pkg/**/*'
+    - 'spec/fixtures/**/*'
+    - 'vendor/**/*'
+
+Style/HashSyntax:
+  EnforcedStyle: hash_rockets
+
+Style/TrailingCommaInLiteral:
+  Enabled: false
+
+Style/SpaceInsideHashLiteralBraces:
+  EnforcedStyle: no_space
