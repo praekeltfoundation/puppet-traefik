@@ -70,6 +70,38 @@ describe 'traefik::install' do
         end
       end
 
+      describe 'with custom download parameters' do
+        let(:params) do
+          {
+            :download_url_base => 'http://www.example.com/downloads',
+            :version => '1.0.0-rc1',
+            :os => 'windows',
+            :arch => 'arm'
+          }
+        end
+
+        it do
+          is_expected.to contain_file('/opt/puppet-archive/traefik-1.0.0-rc1')
+        end
+
+        it do
+          is_expected.to contain_archive(
+            '/opt/puppet-archive/traefik-1.0.0-rc1/traefik'
+          ).with_source('http://www.example.com/downloads/v1.0.0-rc1/traefik_windows-arm')
+        end
+
+        it do
+          is_expected.to contain_file(
+            '/opt/puppet-archive/traefik-1.0.0-rc1/traefik'
+          )
+        end
+
+        it do
+          is_expected.to contain_file('/usr/local/bin/traefik')
+            .with_target('/opt/puppet-archive/traefik-1.0.0-rc1/traefik')
+        end
+      end
+
       describe 'with a custom download_url' do
         let(:params) do
           {
