@@ -3,7 +3,7 @@
 class traefik::params {
   $install_method        = 'url'
   $download_url_base     = 'https://github.com/containous/traefik/releases/download'
-  $version               = '1.0.0-rc1'
+  $version               = '1.0.0-rc2'
 
   case $::architecture {
     'x86_64', 'amd64': { $arch = 'amd64' }

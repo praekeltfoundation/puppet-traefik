@@ -18,7 +18,7 @@ describe 'traefik::install' do
         end
 
         it do
-          is_expected.to contain_file('/opt/puppet-archive/traefik-1.0.0-rc1')
+          is_expected.to contain_file('/opt/puppet-archive/traefik-1.0.0-rc2')
             .with_ensure('directory')
             .with_owner('root')
             .with_group('root')
@@ -27,29 +27,29 @@ describe 'traefik::install' do
 
         it do
           is_expected.to contain_archive(
-            '/opt/puppet-archive/traefik-1.0.0-rc1/traefik'
+            '/opt/puppet-archive/traefik-1.0.0-rc2/traefik'
           ).with_ensure('present')
-            .with_source('https://github.com/containous/traefik/releases/download/v1.0.0-rc1/traefik_linux-amd64')
-            .that_requires('File[/opt/puppet-archive/traefik-1.0.0-rc1]')
+            .with_source('https://github.com/containous/traefik/releases/download/v1.0.0-rc2/traefik_linux-amd64')
+            .that_requires('File[/opt/puppet-archive/traefik-1.0.0-rc2]')
         end
 
         it do
           is_expected.to contain_file(
-            '/opt/puppet-archive/traefik-1.0.0-rc1/traefik'
+            '/opt/puppet-archive/traefik-1.0.0-rc2/traefik'
           ).with_owner('root')
             .with_group('root')
             .with_mode('0755')
             .that_requires(
-              'Archive[/opt/puppet-archive/traefik-1.0.0-rc1/traefik]'
+              'Archive[/opt/puppet-archive/traefik-1.0.0-rc2/traefik]'
             )
         end
 
         it do
           is_expected.to contain_file('/usr/local/bin/traefik')
             .with_ensure('link')
-            .with_target('/opt/puppet-archive/traefik-1.0.0-rc1/traefik')
+            .with_target('/opt/puppet-archive/traefik-1.0.0-rc2/traefik')
             .that_requires(
-              'File[/opt/puppet-archive/traefik-1.0.0-rc1/traefik]'
+              'File[/opt/puppet-archive/traefik-1.0.0-rc2/traefik]'
             )
         end
 
@@ -78,7 +78,7 @@ describe 'traefik::install' do
         end
         it do
           is_expected.to contain_archive(
-            '/opt/puppet-archive/traefik-1.0.0-rc1/traefik'
+            '/opt/puppet-archive/traefik-1.0.0-rc2/traefik'
           ).with_source('http://www.example.com/downloads/traefik_linux-amd64')
         end
       end
@@ -91,19 +91,19 @@ describe 'traefik::install' do
 
         it do
           is_expected.not_to contain_file(
-            '/opt/puppet-archive/traefik-1.0.0-rc1'
+            '/opt/puppet-archive/traefik-1.0.0-rc2'
           )
         end
 
         it do
           is_expected.not_to contain_archive(
-            '/opt/puppet-archive/traefik-1.0.0-rc1/traefik'
+            '/opt/puppet-archive/traefik-1.0.0-rc2/traefik'
           )
         end
 
         it do
           is_expected.not_to contain_file(
-            '/opt/puppet-archive/traefik-1.0.0-rc1/traefik'
+            '/opt/puppet-archive/traefik-1.0.0-rc2/traefik'
           )
         end
 
@@ -126,7 +126,7 @@ describe 'traefik::install' do
         it do
           is_expected.to contain_file('/usr/bin/traefik')
             .with_ensure('link')
-            .with_target('/opt/puppet-archive/traefik-1.0.0-rc1/traefik')
+            .with_target('/opt/puppet-archive/traefik-1.0.0-rc2/traefik')
         end
 
         it do
