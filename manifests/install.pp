@@ -28,6 +28,10 @@
 # [*bin_dir*]
 #   The directory that the Traefik binary will be symlinked into (from where it
 #   was downloaded to).
+#
+# [*init_style*]
+#   The style of the init system on the system. If false-y then no init script
+#   will be installed. Possible values: upstart, false
 class traefik::install (
   $install_method    = $traefik::params::install_method,
 
@@ -40,6 +44,8 @@ class traefik::install (
 
   $archive_path      = '/opt/puppet-archive',
   $bin_dir           = '/usr/local/bin',
+
+  $init_style       = $traefik::params::init_style,
 ) inherits traefik::params {
   case $install_method {
     'url': {
@@ -74,6 +80,28 @@ class traefik::install (
     'none': {}
     default: {
       fail("The provided install method \"${install_method}\" is invalid")
+    }
+  }
+
+  if $init_style {
+    case $init_style {
+      'upstart': {
+        file { '/etc/init/traefik.conf':
+          content => template('traefik/traefik.upstart.erb'),
+          owner   => 'root',
+          group   => 'root',
+          mode    => '0444',
+        }
+        file { '/etc/init.d/traefik':
+          ensure => link,
+          target => '/lib/init/upstart-job',
+          owner  => 'root',
+          group  => 'root',
+        }
+      }
+      default: {
+        fail("Unknown init system style: ${init_style}")
+      }
     }
   }
 }

@@ -52,6 +52,22 @@ describe 'traefik::install' do
               'File[/opt/puppet-archive/traefik-1.0.0-rc1/traefik]'
             )
         end
+
+        it do
+          is_expected.to contain_file('/etc/init/traefik.conf')
+            .with_content(%r{^exec /usr/local/bin/traefik$})
+            .with_owner('root')
+            .with_group('root')
+            .with_mode('0444')
+        end
+
+        it do
+          is_expected.to contain_file('/etc/init.d/traefik')
+            .with_ensure('link')
+            .with_target('/lib/init/upstart-job')
+            .with_owner('root')
+            .with_group('root')
+        end
       end
 
       describe 'with a custom download_url' do
@@ -101,6 +117,35 @@ describe 'traefik::install' do
             Puppet::Error,
             /The provided install method "package" is invalid/
           )
+        end
+      end
+
+      describe 'with a custom bin_dir' do
+        let(:params) { {:bin_dir => '/usr/bin'} }
+
+        it do
+          is_expected.to contain_file('/usr/bin/traefik')
+            .with_ensure('link')
+            .with_target('/opt/puppet-archive/traefik-1.0.0-rc1/traefik')
+        end
+
+        it do
+          is_expected.to contain_file('/etc/init/traefik.conf')
+            .with_content(%r{^exec /usr/bin/traefik$})
+        end
+      end
+
+      describe 'with an unset init_style' do
+        let(:params) { {:init_style => false} }
+        it { is_expected.not_to contain_file('/etc/init/traefik.conf') }
+        it { is_expected.not_to contain_file('/etc/init.d/traefik') }
+      end
+
+      describe 'with an unsupported init system style' do
+        let(:params) { {:init_style => 'systemd'} }
+        it do
+          is_expected.to raise_error(Puppet::Error,
+                                     /Unknown init system style: systemd/)
         end
       end
     end
