@@ -15,7 +15,7 @@ describe 'traefik::service' do
         end
       end
 
-      describe 'with manage set false' do
+      describe 'with manage set to false' do
         let(:params) { {:manage => false} }
         it { is_expected.not_to contain_service('traefik') }
       end
@@ -28,7 +28,7 @@ describe 'traefik::service' do
         end
       end
 
-      describe 'with a enable set to false' do
+      describe 'with enable set to false' do
         let(:params) { {:enable => false} }
         it do
           is_expected.to contain_service('traefik')
