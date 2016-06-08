@@ -115,6 +115,35 @@ describe 'traefik::install' do
         end
       end
 
+      describe 'with a custom archive_path' do
+        let(:params) { {:archive_path => '/opt/voxpupuli-archive'} }
+
+        it { is_expected.to contain_file('/opt/voxpupuli-archive') }
+
+        it do
+          is_expected.to contain_file(
+            '/opt/voxpupuli-archive/traefik-1.0.0-rc2'
+          )
+        end
+
+        it do
+          is_expected.to contain_archive(
+            '/opt/voxpupuli-archive/traefik-1.0.0-rc2/traefik'
+          )
+        end
+
+        it do
+          is_expected.to contain_file(
+            '/opt/voxpupuli-archive/traefik-1.0.0-rc2/traefik'
+          )
+        end
+
+        it do
+          is_expected.to contain_file('/usr/local/bin/traefik')
+            .with_target('/opt/voxpupuli-archive/traefik-1.0.0-rc2/traefik')
+        end
+      end
+
       describe 'with install_method "none"' do
         let(:params) { {:install_method => 'none'} }
 
