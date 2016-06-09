@@ -20,7 +20,7 @@ describe 'traefik' do
               'os' => 'linux',
               'arch' => 'amd64',
               'download_url' => nil,
-              'archive_path' => '/opt/puppet-archive',
+              'archive_dir' => '/opt/puppet-archive',
               'bin_dir' => '/usr/local/bin',
               'init_style' => 'upstart',
               'config_path' => '/etc/traefik/traefik.toml'
@@ -62,7 +62,7 @@ describe 'traefik' do
             :os => 'windows',
             :arch => 'arm',
             :download_url => 'http://www.google.com',
-            :archive_path => '/opt/voxpupuli-archive',
+            :archive_dir => '/opt/voxpupuli-archive',
             :bin_dir => '/usr/bin',
             :init_style => false,
             :config_dir => '/etc/traffic',
@@ -79,7 +79,7 @@ describe 'traefik' do
               'os' => 'windows',
               'arch' => 'arm',
               'download_url' => 'http://www.google.com',
-              'archive_path' => '/opt/voxpupuli-archive',
+              'archive_dir' => '/opt/voxpupuli-archive',
               'bin_dir' => '/usr/bin',
               'init_style' => false,
               'config_path' => '/etc/traffic/config.toml'

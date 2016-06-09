@@ -115,8 +115,8 @@ describe 'traefik::install' do
         end
       end
 
-      describe 'with a custom archive_path' do
-        let(:params) { {:archive_path => '/opt/voxpupuli-archive'} }
+      describe 'with a custom archive_dir' do
+        let(:params) { {:archive_dir => '/opt/voxpupuli-archive'} }
 
         it { is_expected.to contain_file('/opt/voxpupuli-archive') }
 

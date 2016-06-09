@@ -20,7 +20,7 @@
 #   Override the download URL for Traefik. Setting this parameter means that the
 #   download_url_base, version, os, and arch parameters are not used.
 #
-# [*archive_path*]
+# [*archive_dir*]
 #   Path to the directory that Traefik will be downloaded to.
 #
 # [*bin_dir*]
@@ -56,7 +56,7 @@ class traefik (
   $os                = $traefik::params::os,
   $arch              = $traefik::params::arch,
   $download_url      = undef,
-  $archive_path      = $traefik::params::archive_path,
+  $archive_dir       = $traefik::params::archive_dir,
   $bin_dir           = $traefik::params::bin_dir,
   $init_style        = $traefik::params::init_style,
 
@@ -78,7 +78,7 @@ class traefik (
     os                => $os,
     arch              => $arch,
     download_url      => $download_url,
-    archive_path      => $archive_path,
+    archive_dir       => $archive_dir,
     bin_dir           => $bin_dir,
     init_style        => $init_style,
     config_path       => "${config_dir}/${config_file}",
