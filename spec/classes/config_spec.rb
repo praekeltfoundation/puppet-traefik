@@ -25,6 +25,8 @@ describe 'traefik::config' do
 
         it do
           is_expected.to contain_concat__fragment('traefik_header')
+            .with_target('/etc/traefik/traefik.toml')
+            .with_order('00')
             .with_content(/WARNING: This file is managed by Puppet/)
             .with_content(/traefik\.toml/)
             .with_content(/Global configuration/)
@@ -35,6 +37,29 @@ describe 'traefik::config' do
             .with_order('01')
             .with_hash({})
             .with_description('Main section')
+        end
+      end
+
+      describe 'with custom config file location' do
+        let(:params) do
+          {
+            :config_dir => '/etc/traffic',
+            :config_file => 'config.toml'
+          }
+        end
+
+        it do
+          is_expected.to contain_file('/etc/traffic').with_ensure('directory')
+        end
+
+        it do
+          is_expected.to contain_concat('/etc/traffic/config.toml')
+            .that_requires('File[/etc/traffic]')
+        end
+
+        it do
+          is_expected.to contain_concat__fragment('traefik_header')
+            .with_target('/etc/traffic/config.toml')
         end
       end
 
