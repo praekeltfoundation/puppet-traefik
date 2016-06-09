@@ -47,8 +47,8 @@ class traefik::install (
 
   $download_url      = undef,
 
-  $archive_path      = '/opt/puppet-archive',
-  $bin_dir           = '/usr/local/bin',
+  $archive_path      = $traefik::params::archive_path,
+  $bin_dir           = $traefik::params::bin_dir,
 
   $init_style       = $traefik::params::init_style,
   $config_path      = undef,

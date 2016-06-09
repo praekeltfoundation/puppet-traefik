@@ -4,6 +4,11 @@ class traefik::params {
   $install_method        = 'url'
   $download_url_base     = 'https://github.com/containous/traefik/releases/download'
   $version               = '1.0.0-rc2'
+  $archive_path          = '/opt/puppet-archive'
+  $bin_dir               = '/usr/local/bin'
+
+  $config_dir            = '/etc/traefik'
+  $config_file           = 'traefik.toml'
 
   case $::architecture {
     'x86_64', 'amd64': { $arch = 'amd64' }
