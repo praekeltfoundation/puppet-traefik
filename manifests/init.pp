@@ -92,8 +92,8 @@ class traefik (
   }
   ~>
   class { 'traefik::service':
-    manage => $service_manage,
     ensure => $service_ensure,
+    manage => $service_manage,
     enable => $service_enable,
   }
   ->
