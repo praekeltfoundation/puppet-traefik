@@ -3,7 +3,7 @@ description "Traefik"
 start on (filesystem and net-device-up IFACE!=lo)
 stop on runlevel [!2345]
 
-exec <%= @bin_dir %>/traefik
+exec <%= @bin_dir %>/traefik<% if @config_path %> --configFile=<%= @config_path %><% end %>
 
 respawn
 respawn limit 10 10

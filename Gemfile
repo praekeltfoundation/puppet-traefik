@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+gem 'toml-rb'
+
 group :test do
   gem 'rake'
 
