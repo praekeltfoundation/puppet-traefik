@@ -32,6 +32,11 @@
 # [*init_style*]
 #   The style of the init system on the system. If false-y then no init script
 #   will be installed. Possible values: upstart, false
+#
+# [*config_path*]
+#   The path to the config file that Traefik should load on startup. By default,
+#   Traefik looks in a few places for a config file. This is described in its
+#   documentation.
 class traefik::install (
   $install_method    = $traefik::params::install_method,
 
@@ -46,6 +51,7 @@ class traefik::install (
   $bin_dir           = '/usr/local/bin',
 
   $init_style       = $traefik::params::init_style,
+  $config_path      = undef,
 ) inherits traefik::params {
   case $install_method {
     'url': {

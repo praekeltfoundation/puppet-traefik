@@ -209,6 +209,16 @@ describe 'traefik::install' do
                                      /Unknown init system style: systemd/)
         end
       end
+
+      describe 'with a custom config_path' do
+        let(:config_path) { '/etc/traefik/config.toml' }
+        let(:binary) { '/usr/local/bin/traefik' }
+        let(:params) { {:config_path => config_path} }
+        it do
+          is_expected.to contain_file('/etc/init/traefik.conf')
+            .with_content(/^exec #{binary} --configFile=#{config_path}$/)
+        end
+      end
     end
   end
 end
