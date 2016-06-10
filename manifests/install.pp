@@ -60,7 +60,17 @@ class traefik::install (
 
       include archive
 
-      file { [$archive_dir, "${archive_dir}/traefik-${version}"]:
+      # Other modules that use puppet-archive may have created this directory
+      # themselves.
+      unless defined(File[$archive_dir]) {
+        file { $archive_dir:
+          ensure => directory,
+          owner  => 'root',
+          group  => 'root',
+        }
+      }
+
+      file { "${archive_dir}/traefik-${version}":
         ensure => directory,
         owner  => 'root',
         group  => 'root',
