@@ -38,6 +38,20 @@ describe 'traefik::config' do
             .with_hash({})
             .with_description('Main section')
         end
+
+        it do
+          is_expected.to contain_concat__fragment('traefik_main_header')
+            .with_order('01-0')
+            .with_target('/etc/traefik/traefik.toml')
+            .with_content(/Main section/)
+        end
+
+        it do
+          is_expected.to contain_concat__fragment('traefik_main')
+            .with_order('01-1')
+            .with_target('/etc/traefik/traefik.toml')
+            .with_content('')
+        end
       end
 
       describe 'with custom config file location' do
@@ -59,6 +73,16 @@ describe 'traefik::config' do
 
         it do
           is_expected.to contain_concat__fragment('traefik_header')
+            .with_target('/etc/traffic/config.toml')
+        end
+
+        it do
+          is_expected.to contain_concat__fragment('traefik_main_header')
+            .with_target('/etc/traffic/config.toml')
+        end
+
+        it do
+          is_expected.to contain_concat__fragment('traefik_main')
             .with_target('/etc/traffic/config.toml')
         end
       end
