@@ -20,7 +20,7 @@ describe 'traefik::config::section' do
         it do
           is_expected.to contain_concat__fragment('traefik_test')
             .with_target('/etc/traefik/traefik.toml')
-            .with_order('20')
+            .with_order('20-1')
             .with_content(/^test = "abc"$/)
         end
       end
@@ -42,14 +42,14 @@ describe 'traefik::config::section' do
         it do
           is_expected.to contain_concat__fragment('traefik_test_header')
             .with_target('/etc/traefik/traefik.toml')
-            .with_order('20')
+            .with_order('20-0')
             .with_content(/Test section/)
         end
 
         it do
           is_expected.to contain_concat__fragment('traefik_test')
             .with_target('/etc/traefik/traefik.toml')
-            .with_order('20')
+            .with_order('20-1')
             .with_content(/^test = "abc"$/)
         end
       end
@@ -65,12 +65,12 @@ describe 'traefik::config::section' do
 
         it do
           is_expected.to contain_concat__fragment('traefik_test_header')
-            .with_order('33')
+            .with_order('33-0')
         end
 
         it do
           is_expected.to contain_concat__fragment('traefik_test')
-            .with_order('33')
+            .with_order('33-1')
         end
       end
     end

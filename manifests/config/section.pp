@@ -21,14 +21,14 @@ define traefik::config::section (
   if $description != undef {
     concat::fragment { "traefik_${name}_header":
       target  => $traefik::config::config_path,
-      order   => $order,
+      order   => "${order}-0",
       content => template('traefik/config_section_header.toml.erb')
     }
   }
 
   concat::fragment { "traefik_${name}":
     target  => $traefik::config::config_path,
-    order   => $order,
+    order   => "${order}-1",
     content => traefik_toml($hash)
   }
 }
