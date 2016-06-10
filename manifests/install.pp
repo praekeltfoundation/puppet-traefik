@@ -22,7 +22,7 @@
 #   Override the download URL for Traefik. Setting this parameter means that the
 #   download_url_base, version, os, and arch parameters are not used.
 #
-# [*archive_path*]
+# [*archive_dir*]
 #   Path to the directory that Traefik will be downloaded to.
 #
 # [*bin_dir*]
@@ -47,11 +47,11 @@ class traefik::install (
 
   $download_url      = undef,
 
-  $archive_path      = '/opt/puppet-archive',
-  $bin_dir           = '/usr/local/bin',
+  $archive_dir       = $traefik::params::archive_dir,
+  $bin_dir           = $traefik::params::bin_dir,
 
-  $init_style       = $traefik::params::init_style,
-  $config_path      = undef,
+  $init_style        = $traefik::params::init_style,
+  $config_path       = undef,
 ) inherits traefik::params {
   case $install_method {
     'url': {
@@ -60,13 +60,13 @@ class traefik::install (
 
       include archive
 
-      file { [$archive_path, "${archive_path}/traefik-${version}"]:
+      file { [$archive_dir, "${archive_dir}/traefik-${version}"]:
         ensure => directory,
         owner  => 'root',
         group  => 'root',
       }
 
-      archive { "${archive_path}/traefik-${version}/traefik":
+      archive { "${archive_dir}/traefik-${version}/traefik":
         ensure       => present,
         source       => $real_download_url,
         # Workaround for https://github.com/voxpupuli/puppet-archive/issues/166
@@ -74,13 +74,13 @@ class traefik::install (
         extract_path => '/tmp'
       }->
       file {
-        "${archive_path}/traefik-${version}/traefik":
+        "${archive_dir}/traefik-${version}/traefik":
           owner => 'root',
           group => 'root',
           mode  => '0755';
         "${bin_dir}/traefik":
           ensure => link,
-          target => "${archive_path}/traefik-${version}/traefik";
+          target => "${archive_dir}/traefik-${version}/traefik";
       }
     }
     'none': {}

@@ -12,10 +12,10 @@
 #   A hash of config options to be serialized into TOML for the main section of
 #   Traefik's configuration.
 class traefik::config (
-  $config_dir  = '/etc/traefik',
-  $config_file = 'traefik.toml',
+  $config_dir  = $traefik::params::config_dir,
+  $config_file = $traefik::params::config_file,
   $config_hash = {},
-) {
+) inherits traefik::params {
   $config_path = "${config_dir}/${config_file}"
 
   file { $config_dir:
