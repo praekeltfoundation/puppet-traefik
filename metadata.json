@@ -1,6 +1,6 @@
 {
   "name": "praekeltfoundation-traefik",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Jamie Hewland",
   "summary": "Module to manage the Traefik reverse proxy",
   "license": "MIT",
@@ -18,7 +18,7 @@
     },
     {
       "name": "puppetlabs-concat",
-      "version_requirement": ">= 2.1.0"
+      "version_requirement": ">= 1.1.0"
     }
   ],
   "requirements": [
