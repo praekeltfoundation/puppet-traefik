@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'traefik' do
   on_supported_os.each do |os, facts|
     context "on #{os}" do
-      let(:facts) { facts }
+      let(:facts) { facts.merge(:concat_basedir => '/tmp/concat') }
 
       describe 'with default parameters' do
         it { is_expected.to compile }
