@@ -7,9 +7,7 @@ describe 'traefik::config::section' do
 
       let(:title) { 'test' }
 
-      describe 'when hash is passed' do
-        let(:params) { {:hash => {'test' => 'abc'}} }
-
+      describe 'with default parameters' do
         it { is_expected.to compile }
         it { is_expected.to contain_class('traefik::config') }
 
@@ -21,23 +19,24 @@ describe 'traefik::config::section' do
           is_expected.to contain_concat__fragment('traefik_test')
             .with_target('/etc/traefik/traefik.toml')
             .with_order('20-1')
-            .with_content(/^test = "abc"$/)
+            .with_content("[test]\n")
         end
       end
 
-      describe 'when hash is not passed' do
+      describe 'when hash is passed' do
+        let(:params) { {:hash => {'key' => 'value'}} }
+
         it do
-          is_expected.to compile.and_raise_error(mustpass('hash'))
+          is_expected.to contain_concat__fragment('traefik_test')
+            .with_target('/etc/traefik/traefik.toml')
+            .with_order('20-1')
+            .with_content(/^\[test\]$/)
+            .with_content(/^key = "value"$/)
         end
       end
 
       describe 'when description is passed' do
-        let(:params) do
-          {
-            :hash => {'test' => 'abc'},
-            :description => 'Test section'
-          }
-        end
+        let(:params) { {:description => 'Test section'} }
 
         it do
           is_expected.to contain_concat__fragment('traefik_test_header')
@@ -45,19 +44,11 @@ describe 'traefik::config::section' do
             .with_order('20-0')
             .with_content(/Test section/)
         end
-
-        it do
-          is_expected.to contain_concat__fragment('traefik_test')
-            .with_target('/etc/traefik/traefik.toml')
-            .with_order('20-1')
-            .with_content(/^test = "abc"$/)
-        end
       end
 
       describe 'when a custom order is set' do
         let(:params) do
           {
-            :hash => {'test' => 'abc'},
             :description => 'Test section',
             :order => '33'
           }
@@ -71,6 +62,27 @@ describe 'traefik::config::section' do
         it do
           is_expected.to contain_concat__fragment('traefik_test')
             .with_order('33-1')
+        end
+      end
+
+      describe 'when table is passed' do
+        let(:params) { {:table => 'tabular'} }
+        it do
+          is_expected.to contain_concat__fragment('traefik_test')
+            .with_content("[tabular]\n")
+        end
+      end
+
+      describe 'when table is false' do
+        let(:params) do
+          {
+            :table => false,
+            :hash => {'key' => 'value'}
+          }
+        end
+        it do
+          is_expected.to contain_concat__fragment('traefik_test')
+            .with_content("key = \"value\"\n")
         end
       end
     end

@@ -5,6 +5,10 @@
 # [*hash*]
 #   The hash of config options to put in this section of the config file.
 #
+# [*table*]
+#   The TOML table for this section of config. This defaults to the resource's
+#   name.
+#
 # [*order*]
 #   The order of this section (concat fragment) within the config file.
 #
@@ -12,7 +16,8 @@
 #   A short description of this section. If provided, a header will be created
 #   for this section in the config file.
 define traefik::config::section (
-  $hash,
+  $hash        = {},
+  $table       = $name,
   $order       = '20',
   $description = undef
 ) {
@@ -26,9 +31,17 @@ define traefik::config::section (
     }
   }
 
+  if $table {
+    $real_hash = {
+      $table => $hash
+    }
+  } else {
+    $real_hash = $hash
+  }
+
   concat::fragment { "traefik_${name}":
     target  => $traefik::config::config_path,
     order   => "${order}-1",
-    content => traefik_toml($hash)
+    content => traefik_toml($real_hash)
   }
 }

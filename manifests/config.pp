@@ -39,6 +39,7 @@ class traefik::config (
   traefik::config::section { 'main':
     order       => '01',
     hash        => $config_hash,
+    table       => false,
     description => 'Main section'
   }
 }
