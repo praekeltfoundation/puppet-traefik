@@ -32,9 +32,8 @@ define traefik::config::section (
   }
 
   if $table {
-    $real_hash = {
-      $table => $hash
-    }
+    # Have to put $table in string literal for Puppet 3 parser to be happy
+    $real_hash = {"${table}" => $hash}
   } else {
     $real_hash = $hash
   }
