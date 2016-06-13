@@ -18,9 +18,7 @@ Different sections of Traefik's TOML configuration file can be defined with the 
 traefik::config::section { 'web':
   description => 'API backend',
   order       => '10',
-  hash        => {
-    'web' => {'address' => ':9090'}
-  }
+  hash        => {'address' => ':9090'}
 }
 ```
 
