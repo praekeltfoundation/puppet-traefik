@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'traefik::config::section' do
   on_supported_os.each do |os, facts|
     context "on #{os}" do
-      let(:facts) { facts }
+      let(:facts) { facts.merge(:concat_basedir => '/tmp/concat') }
 
       let(:title) { 'test' }
 
