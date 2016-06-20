@@ -13,6 +13,14 @@ describe 'traefik::config::file' do
           is_expected.to contain_traefik__config__section('file')
             .with_order('10')
             .with_hash('watch' => false)
+            .with_description('File configuration backend')
+        end
+
+        it do
+          is_expected.to contain_concat__fragment('traefik_file_header')
+            .with_target('/etc/traefik/traefik.toml')
+            .with_order('10-0')
+            .with_content(/File configuration backend/)
         end
 
         it do

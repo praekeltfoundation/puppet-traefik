@@ -45,9 +45,10 @@ class traefik::config::file (
   }
 
   traefik::config::section { 'file':
-    order => '10',
-    hash  => merge($base_hash, {
+    order       => '10',
+    hash        => merge($base_hash, {
       'watch' => $watch
-    })
+    }),
+    description => 'File configuration backend'
   }
 }
