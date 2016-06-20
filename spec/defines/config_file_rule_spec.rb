@@ -20,11 +20,26 @@ describe 'traefik::config::file_rule' do
         end
 
         it do
+          is_expected.to contain_concat__fragment('traefik_test-frontend')
+            .with_target('/etc/traefik/traefik.toml')
+            .with_order('30-0-1')
+            .with_content(/^\[frontends.test-frontend\]$/)
+            .with_content(/^backend = "test-backend"$/)
+        end
+
+        it do
           is_expected.to contain_traefik__config__section('test-backend')
             .with_table('backends')
             .with_order('30-1')
             .with_hash('test-backend' => {})
             .with_target('/etc/traefik/traefik.toml')
+        end
+
+        it do
+          is_expected.to contain_concat__fragment('traefik_test-backend')
+            .with_target('/etc/traefik/traefik.toml')
+            .with_order('30-1-1')
+            .with_content("[backends.test-backend]\n")
         end
       end
 
@@ -88,6 +103,15 @@ describe 'traefik::config::file_rule' do
         it do
           is_expected.to contain_traefik__config__section('test-frontend')
             .with_description('Test setup')
+        end
+
+        it do
+          is_expected.to contain_concat__fragment(
+            'traefik_test-frontend_header'
+          )
+            .with_target('/etc/traefik/traefik.toml')
+            .with_order('30-0-0')
+            .with_content(/Test setup/)
         end
       end
     end

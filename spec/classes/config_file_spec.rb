@@ -14,6 +14,14 @@ describe 'traefik::config::file' do
             .with_order('10')
             .with_hash('watch' => false)
         end
+
+        it do
+          is_expected.to contain_concat__fragment('traefik_file')
+            .with_target('/etc/traefik/traefik.toml')
+            .with_order('10-1')
+            .with_content(/^\[file\]$/)
+            .with_content(/^watch = false$/)
+        end
       end
 
       describe 'when filename is passed' do
