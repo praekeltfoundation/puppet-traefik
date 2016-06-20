@@ -22,9 +22,60 @@ traefik::config::section { 'web':
 }
 ```
 
+### File backend
+Configuring backends and frontends using hashes in `traefik::config::section` resources can quickly get tedious. The `traefik::config::file` class and `traefik::config::file_rule` defined type make setting this up a bit easier.
+
+To start, configure some basics for the file backend:
+```puppet
+class { 'traefik::config::file':
+  filename => 'rules.toml',
+  watch    => true
+}
+```
+This will set up Traefik to read configuration for the file backend from a file called `rules.toml` and to watch that file for changes. Next, we create some frontend and backend rules:
+```puppet
+traefik::config::file_rule { 'my-service':
+  frontend => {
+    'routes' => {
+      'test_1' => {
+        'rule' => 'Host:my-service.example.com'
+      }
+    }
+  },
+  backend  => {
+    'servers' => {
+      'server1' => {
+        'url'    => 'http://172.17.0.2:80',
+        'weight' => 10
+      },
+      'server2' => {
+        'url'    => 'http://172.17.0.3:80',
+        'weight' => 1
+      }
+    }
+  }
+}
+```
+
+This should produce (roughly) the following config in `rules.toml`:
+```toml
+[frontends.my-service-frontend]
+backend = 'my-service-backend'
+
+[frontends.my-service-frontend.routes.test_1]
+rule = "Host:my-service.example.com"
+
+[backends.my-service-backend.servers.server1]
+url = "http://172.17.0.2:80"
+weight = 10
+
+[backends.my-service-backend.servers.server2]
+url = "http://172.17.0.3:80"
+weight = 1
+```
+
 ## Limitations
 * Currently **only works on Ubuntu 14.04** (pull requests welcome).
 * Uses the [`toml-rb`](https://rubygems.org/gems/toml-rb) gem to generate config with a parser function. This means that your Puppet server must have the gem correctly installed. See [this page](https://docs.puppet.com/puppetserver/latest/gems.html) for Puppet 4 instructions.
 * There is no validation on config parameters. Everything (and anything) can be specified via hashes.
-* Does not (easily) provide a way to specify config in multiple files.
 * Traefik is a fast moving project that hasn't yet had a stable release. Things will likely break as things change.
