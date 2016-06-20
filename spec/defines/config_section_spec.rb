@@ -85,6 +85,24 @@ describe 'traefik::config::section' do
             .with_content("key = \"value\"\n")
         end
       end
+
+      describe 'when a custom target is set' do
+        let(:params) do
+          {
+            :target => '/etc/traefik/rules.toml',
+            :description => 'Test section'
+          }
+        end
+        it do
+          is_expected.to contain_concat__fragment('traefik_test_header')
+            .with_target('/etc/traefik/rules.toml')
+            .with_content(/Test section/)
+        end
+        it do
+          is_expected.to contain_concat__fragment('traefik_test')
+            .with_target('/etc/traefik/rules.toml')
+        end
+      end
     end
   end
 end

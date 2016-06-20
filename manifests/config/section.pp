@@ -15,17 +15,28 @@
 # [*description*]
 #   A short description of this section. If provided, a header will be created
 #   for this section in the config file.
+#
+# [*target*]
+#   The target concat resource for the fragments in this section. Generally,
+#   this is for internal use only.
 define traefik::config::section (
   $hash        = {},
   $table       = $name,
   $order       = '20',
-  $description = undef
+  $description = undef,
+  $target      = undef,
 ) {
   include traefik::config
 
+  if $target == undef {
+    $real_target = $traefik::config::config_path
+  } else {
+    $real_target = $target
+  }
+
   if $description != undef {
     concat::fragment { "traefik_${name}_header":
-      target  => $traefik::config::config_path,
+      target  => $real_target,
       order   => "${order}-0",
       content => template('traefik/config_section_header.toml.erb')
     }
@@ -39,7 +50,7 @@ define traefik::config::section (
   }
 
   concat::fragment { "traefik_${name}":
-    target  => $traefik::config::config_path,
+    target  => $real_target,
     order   => "${order}-1",
     content => traefik_toml($real_hash)
   }
