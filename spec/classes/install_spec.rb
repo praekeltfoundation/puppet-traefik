@@ -53,20 +53,38 @@ describe 'traefik::install' do
             )
         end
 
-        it do
-          is_expected.to contain_file('/etc/init/traefik.conf')
-            .with_content(%r{^exec /usr/local/bin/traefik$})
-            .with_owner('root')
-            .with_group('root')
-            .with_mode('0444')
-        end
+        if facts[:operatingsystem] == 'Debian'
+          it do
+            is_expected.to contain_file('/lib/systemd/system/traefik.service')
+              .with_content(%r{^ExecStart=/usr/local/bin/traefik$})
+              .with_owner('root')
+              .with_group('root')
+              .with_mode('0644')
+          end
 
-        it do
-          is_expected.to contain_file('/etc/init.d/traefik')
-            .with_ensure('link')
-            .with_target('/lib/init/upstart-job')
-            .with_owner('root')
-            .with_group('root')
+          it do
+            is_expected.to contain_exec('traefik-systemd-reload')
+              .with_command('systemctl daemon-reload')
+              .with_path(['/usr/bin', '/bin', '/usr/sbin'])
+              .with_refreshonly(true)
+          end
+
+        elsif facts[:operatingsystem] == 'Ubuntu'
+          it do
+            is_expected.to contain_file('/etc/init/traefik.conf')
+              .with_content(%r{^exec /usr/local/bin/traefik$})
+              .with_owner('root')
+              .with_group('root')
+              .with_mode('0444')
+          end
+
+          it do
+            is_expected.to contain_file('/etc/init.d/traefik')
+              .with_ensure('link')
+              .with_target('/lib/init/upstart-job')
+              .with_owner('root')
+              .with_group('root')
+          end
         end
       end
 
@@ -190,9 +208,16 @@ describe 'traefik::install' do
             .with_target('/opt/puppet-archive/traefik-1.0.0-rc2/traefik')
         end
 
-        it do
-          is_expected.to contain_file('/etc/init/traefik.conf')
-            .with_content(%r{^exec /usr/bin/traefik$})
+        if facts[:operatingsystem] == 'Debian'
+          it do
+            is_expected.to contain_file('/lib/systemd/system/traefik.service')
+              .with_content(%r{^ExecStart=/usr/bin/traefik$})
+          end
+        elsif facts[:operatingsystem] == 'Ubuntu'
+          it do
+            is_expected.to contain_file('/etc/init/traefik.conf')
+              .with_content(%r{^exec /usr/bin/traefik$})
+          end
         end
       end
 
@@ -203,10 +228,10 @@ describe 'traefik::install' do
       end
 
       describe 'with an unsupported init system style' do
-        let(:params) { {:init_style => 'systemd'} }
+        let(:params) { {:init_style => 'launchd'} }
         it do
           is_expected.to raise_error(Puppet::Error,
-                                     /Unknown init system style: systemd/)
+                                     /Unknown init system style: launchd/)
         end
       end
 
@@ -214,9 +239,17 @@ describe 'traefik::install' do
         let(:config_path) { '/etc/traefik/config.toml' }
         let(:binary) { '/usr/local/bin/traefik' }
         let(:params) { {:config_path => config_path} }
-        it do
-          is_expected.to contain_file('/etc/init/traefik.conf')
-            .with_content(/^exec #{binary} --configFile=#{config_path}$/)
+
+        if facts[:operatingsystem] == 'Debian'
+          it do
+            is_expected.to contain_file('/lib/systemd/system/traefik.service')
+              .with_content(/^ExecStart=#{binary} --configFile=#{config_path}$/)
+          end
+        elsif facts[:operatingsystem] == 'Ubuntu'
+          it do
+            is_expected.to contain_file('/etc/init/traefik.conf')
+              .with_content(/^exec #{binary} --configFile=#{config_path}$/)
+          end
         end
       end
     end

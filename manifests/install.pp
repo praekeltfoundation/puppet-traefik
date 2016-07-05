@@ -101,6 +101,19 @@ class traefik::install (
 
   if $init_style {
     case $init_style {
+      'systemd': {
+        file { '/lib/systemd/system/traefik.service':
+          owner   => 'root',
+          group   => 'root',
+          mode    => '0644',
+          content => template('traefik/traefik.systemd.erb'),
+        }~>
+        exec { 'traefik-systemd-reload':
+          command     => 'systemctl daemon-reload',
+          path        => ['/usr/bin', '/bin', '/usr/sbin'],
+          refreshonly => true,
+        }
+      }
       'upstart': {
         file { '/etc/init/traefik.conf':
           content => template('traefik/traefik.upstart.erb'),
