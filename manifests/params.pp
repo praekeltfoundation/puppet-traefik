@@ -3,7 +3,7 @@
 class traefik::params {
   $install_method    = 'url'
   $download_url_base = 'https://github.com/containous/traefik/releases/download'
-  $version           = '1.0.0-rc2'
+  $version           = '1.0.0'
   $archive_dir       = '/opt/puppet-archive'
   $bin_dir           = '/usr/local/bin'
 
