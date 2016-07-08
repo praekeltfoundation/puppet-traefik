@@ -19,10 +19,10 @@ describe 'traefik' do
         end
         it do
           is_expected.to contain_class('traefik::install')
+            .with_version(/^\d+\.\d+\.\d+.*$/)
             .with(
               'install_method' => 'url',
               'download_url_base' => 'https://github.com/containous/traefik/releases/download',
-              'version' => '1.0.0-rc2',
               'os' => 'linux',
               'arch' => 'amd64',
               'download_url' => nil,
