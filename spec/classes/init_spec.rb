@@ -11,18 +11,24 @@ describe 'traefik' do
 
         it { is_expected.to contain_anchor('traefik::begin') }
 
+        # FIXME: Find a better way to do this
+        if facts[:operatingsystem] == 'Ubuntu'
+          init_style = 'upstart'
+        elsif facts[:operatingsystem] == 'Debian'
+          init_style = 'systemd'
+        end
         it do
           is_expected.to contain_class('traefik::install')
+            .with_version(/^\d+\.\d+\.\d+.*$/)
             .with(
               'install_method' => 'url',
               'download_url_base' => 'https://github.com/containous/traefik/releases/download',
-              'version' => '1.0.0-rc2',
               'os' => 'linux',
               'arch' => 'amd64',
               'download_url' => nil,
               'archive_dir' => '/opt/puppet-archive',
               'bin_dir' => '/usr/local/bin',
-              'init_style' => 'upstart',
+              'init_style' => init_style,
               'config_path' => '/etc/traefik/traefik.toml'
             )
             .that_notifies('Class[traefik::service]')

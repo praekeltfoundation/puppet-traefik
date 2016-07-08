@@ -1,6 +1,6 @@
 {
   "name": "praekeltfoundation-traefik",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "author": "Jamie Hewland",
   "summary": "Module to manage the Traefik reverse proxy",
   "license": "MIT",
@@ -28,6 +28,12 @@
     }
   ],
   "operatingsystem_support": [
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "8"
+      ]
+    },
     {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [

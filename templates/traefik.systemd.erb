@@ -1,0 +1,11 @@
+[Unit]
+Description=Traefik
+Wants=basic.target
+After=basic.target network.target
+
+[Service]
+ExecStart=<%= @bin_dir %>/traefik<% if @config_path %> --configFile=<%= @config_path %><% end %>
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

@@ -3,7 +3,7 @@
 class traefik::params {
   $install_method    = 'url'
   $download_url_base = 'https://github.com/containous/traefik/releases/download'
-  $version           = '1.0.0-rc2'
+  $version           = '1.0.0'
   $archive_dir       = '/opt/puppet-archive'
   $bin_dir           = '/usr/local/bin'
 
@@ -21,7 +21,11 @@ class traefik::params {
 
   $os = downcase($::kernel)
 
-  if $::operatingsystem == 'Ubuntu' {
+  if $::operatingsystem == 'Debian' {
+    if versioncmp($::operatingsystemmajrelease, '8') == 0 {
+      $init_style = 'systemd'
+    }
+  } elsif $::operatingsystem == 'Ubuntu' {
     if versioncmp($::operatingsystemrelease, '14.04') == 0 {
       $init_style = 'upstart'
     }
