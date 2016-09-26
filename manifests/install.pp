@@ -44,6 +44,7 @@ class traefik::install (
   $version           = $traefik::params::version,
   $os                = $traefik::params::os,
   $arch              = $traefik::params::arch,
+  $max_open_files    = $traefik::params::max_open_files,
 
   $download_url      = undef,
 
@@ -53,6 +54,9 @@ class traefik::install (
   $init_style        = $traefik::params::init_style,
   $config_path       = undef,
 ) inherits traefik::params {
+
+  validate_integer($max_open_files)
+
   case $install_method {
     'url': {
       $real_download_url = pick($download_url,

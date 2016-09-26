@@ -8,3 +8,4 @@ exec <%= @bin_dir %>/traefik<% if @config_path %> --configFile=<%= @config_path 
 respawn
 respawn limit 10 10
 kill timeout 10
+limit nofile <%= @max_open_files %> <%= @max_open_files %>
