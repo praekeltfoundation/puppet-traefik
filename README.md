@@ -13,12 +13,27 @@ class { 'traefik':
 }
 ```
 
-Different sections of Traefik's TOML configuration file can be defined with the `traefik::config::section` type:
+Different sections of Traefik's TOML configuration file can be defined with the `traefik::config::section` type. The name of the Puppet resource, in this case 'web' is used for the top-level of the resulting hash and will result in a table [web] in the TOML file:
 ```puppet
 traefik::config::section { 'web':
   description => 'API backend',
   order       => '10',
   hash        => {'address' => ':9090'}
+}
+```
+
+Hashes can be nested to produce nested TOML tables. The following resource will output the common http and https EntryPoints.
+```puppet
+traefik::config::section { 'entryPoints':
+  hash => {
+    'http'  => {
+      'address' => ':80'
+    },
+    'https' => {
+      'address' => ':443',
+      'tls'     => {}
+    }
+  }
 }
 ```
 
