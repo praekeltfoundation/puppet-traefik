@@ -5,6 +5,7 @@ describe 'traefik::install' do
     context "on #{os}" do
       let(:facts) { facts }
       let(:version) { '1.0.0' }
+      let(:max_open_files) { '16384' }
 
       describe 'with default parameters' do
         let(:params) { {:version => version} }
@@ -60,6 +61,7 @@ describe 'traefik::install' do
           it do
             is_expected.to contain_file('/lib/systemd/system/traefik.service')
               .with_content(%r{^ExecStart=/usr/local/bin/traefik$})
+              .with_content(/^LimitNOFILE=#{max_open_files}$/)
               .with_owner('root')
               .with_group('root')
               .with_mode('0644')
@@ -76,6 +78,7 @@ describe 'traefik::install' do
           it do
             is_expected.to contain_file('/etc/init/traefik.conf')
               .with_content(%r{^exec /usr/local/bin/traefik$})
+              .with_content(/^limit nofile #{max_open_files} #{max_open_files}$/)
               .with_owner('root')
               .with_group('root')
               .with_mode('0444')
@@ -263,6 +266,23 @@ describe 'traefik::install' do
           it do
             is_expected.to contain_file('/etc/init/traefik.conf')
               .with_content(/^exec #{binary} --configFile=#{config_path}$/)
+          end
+        end
+      end
+
+      describe 'with a custom max_open_files' do
+        let(:max_open_files) { '1234' }
+        let(:params) { {:max_open_files => max_open_files} }
+
+        if facts[:operatingsystem] == 'Debian'
+          it do
+            is_expected.to contain_file('/lib/systemd/system/traefik.service')
+              .with_content(/^LimitNOFILE=#{max_open_files}$/)
+          end
+        elsif facts[:operatingsystem] == 'Ubuntu'
+          it do
+            is_expected.to contain_file('/etc/init/traefik.conf')
+              .with_content(/^limit nofile #{max_open_files} #{max_open_files}$/)
           end
         end
       end
