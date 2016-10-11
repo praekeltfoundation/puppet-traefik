@@ -6,6 +6,7 @@ After=basic.target network.target
 [Service]
 ExecStart=<%= @bin_dir %>/traefik<% if @config_path %> --configFile=<%= @config_path %><% end %>
 Restart=on-failure
+LimitNOFILE=<%= @max_open_files %>
 
 [Install]
 WantedBy=multi-user.target

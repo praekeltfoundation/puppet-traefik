@@ -27,6 +27,10 @@
 #   The directory that the Traefik binary will be symlinked into (from where it
 #   was downloaded to).
 #
+# [*max_open_files*]
+#   Integer which controls 'nofile' ulimit value in init scripts, which sets
+#   the maximum number of open files for the Traefik process.
+#
 # [*init_style*]
 #   The style of the init system on the system. If false-y then no init script
 #   will be installed. Possible values: upstart, false
@@ -58,6 +62,7 @@ class traefik (
   $download_url      = undef,
   $archive_dir       = $traefik::params::archive_dir,
   $bin_dir           = $traefik::params::bin_dir,
+  $max_open_files    = $traefik::params::max_open_files,
   $init_style        = $traefik::params::init_style,
 
   $config_dir        = $traefik::params::config_dir,
@@ -80,6 +85,7 @@ class traefik (
     download_url      => $download_url,
     archive_dir       => $archive_dir,
     bin_dir           => $bin_dir,
+    max_open_files    => $max_open_files,
     init_style        => $init_style,
     config_path       => "${config_dir}/${config_file}",
     notify            => Class['traefik::service'],
