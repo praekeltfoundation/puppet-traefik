@@ -6,7 +6,7 @@ class traefik::params {
   $version           = '1.0.3'
   $archive_dir       = '/opt/puppet-archive'
   $bin_dir           = '/usr/local/bin'
-  $max_open_files    = '16384'
+  $max_open_files    = 16384
 
   $config_dir        = '/etc/traefik'
   $config_file       = 'traefik.toml'

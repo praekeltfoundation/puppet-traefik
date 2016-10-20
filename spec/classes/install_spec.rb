@@ -5,7 +5,7 @@ describe 'traefik::install' do
     context "on #{os}" do
       let(:facts) { facts }
       let(:version) { '1.0.3' }
-      let(:max_open_files) { '16384' }
+      let(:max_open_files) { 16384 }
 
       describe 'with default parameters' do
         let(:params) { {:version => version} }
@@ -276,7 +276,7 @@ describe 'traefik::install' do
       end
 
       describe 'with a custom max_open_files' do
-        let(:max_open_files) { '1234' }
+        let(:max_open_files) { 1234 }
         let(:params) { {:max_open_files => max_open_files} }
 
         if facts[:operatingsystem] == 'Debian'
