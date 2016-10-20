@@ -1,6 +1,6 @@
 {
   "name": "praekeltfoundation-traefik",
-  "version": "0.3.1",
+  "version": "0.3.2-dev",
   "author": "Jamie Hewland",
   "summary": "Module to manage the Traefik reverse proxy",
   "license": "MIT",
