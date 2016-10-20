@@ -4,7 +4,7 @@ describe 'traefik::install' do
   on_supported_os.each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }
-      let(:version) { '1.0.0' }
+      let(:version) { '1.0.3' }
       let(:max_open_files) { '16384' }
 
       describe 'with default parameters' do
@@ -217,7 +217,12 @@ describe 'traefik::install' do
       end
 
       describe 'with a custom bin_dir' do
-        let(:params) { {:bin_dir => '/usr/bin'} }
+        let(:params) do
+          {
+            :bin_dir => '/usr/bin',
+            :version => version
+          }
+        end
 
         it do
           is_expected.to contain_file('/usr/bin/traefik')
