@@ -79,7 +79,8 @@ describe 'traefik::install' do
             is_expected.to contain_file('/etc/init/traefik.conf')
               .with_content(%r{^exec /usr/local/bin/traefik$})
               .with_content(
-                /^limit nofile #{max_open_files} #{max_open_files}$/)
+                /^limit nofile #{max_open_files} #{max_open_files}$/
+              )
               .with_owner('root')
               .with_group('root')
               .with_mode('0444')
