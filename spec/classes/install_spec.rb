@@ -78,7 +78,8 @@ describe 'traefik::install' do
           it do
             is_expected.to contain_file('/etc/init/traefik.conf')
               .with_content(%r{^exec /usr/local/bin/traefik$})
-              .with_content(/^limit nofile #{max_open_files} #{max_open_files}$/)
+              .with_content(
+                /^limit nofile #{max_open_files} #{max_open_files}$/)
               .with_owner('root')
               .with_group('root')
               .with_mode('0444')
@@ -287,7 +288,9 @@ describe 'traefik::install' do
         elsif facts[:operatingsystem] == 'Ubuntu'
           it do
             is_expected.to contain_file('/etc/init/traefik.conf')
-              .with_content(/^limit nofile #{max_open_files} #{max_open_files}$/)
+              .with_content(
+                /^limit nofile #{max_open_files} #{max_open_files}$/
+              )
           end
         end
       end
