@@ -15,10 +15,9 @@ Style/TrailingCommaInLiteral:
 Style/SpaceInsideHashLiteralBraces:
   EnforcedStyle: no_space
 
+Style/NumericLiterals:
+  Enabled: false
+
 # This check errors out on Ruby 1.9.3 on Travis for some reason :-/
 Style/WordArray:
   Enabled: false
-
-# Increase linelength to match Puppet style guide
-Metrics/LineLength:
-  Max: 140
