@@ -4,7 +4,7 @@ describe 'traefik::install' do
   on_supported_os.each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }
-      let(:version) { '1.0.3' }
+      let(:version) { '1.1.1' }
       let(:max_open_files) { 16384 }
 
       describe 'with default parameters' do
