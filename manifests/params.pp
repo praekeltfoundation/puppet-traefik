@@ -29,6 +29,8 @@ class traefik::params {
   } elsif $::operatingsystem == 'Ubuntu' {
     if versioncmp($::operatingsystemrelease, '14.04') == 0 {
       $init_style = 'upstart'
+    } elsif versioncmp($::operatingsystemrelease, '16.04') == 0 {
+      $init_style = 'systemd'
     }
   }
   if $init_style == undef {
