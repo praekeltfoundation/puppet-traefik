@@ -13,7 +13,11 @@ describe 'traefik' do
 
         # FIXME: Find a better way to do this
         if facts[:operatingsystem] == 'Ubuntu'
-          init_style = 'upstart'
+          if facts[:operatingsystemrelease] == '14.04'
+            init_style = 'upstart'
+          elsif facts[:operatingsystemrelease] == '16.04'
+            init_style = 'systemd'
+          end
         elsif facts[:operatingsystem] == 'Debian'
           init_style = 'systemd'
         end
