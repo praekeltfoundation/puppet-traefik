@@ -23,7 +23,7 @@ class traefik::params {
   $os = downcase($::kernel)
 
   if $::operatingsystem == 'Debian' {
-    if versioncmp($::operatingsystemmajrelease, '8') == 0 {
+    if versioncmp($::operatingsystemmajrelease, '8') >= 0 {
       $init_style = 'systemd'
     }
   } elsif $::operatingsystem == 'Ubuntu' {
