@@ -14,10 +14,4 @@ group :test do
   gem 'rspec-puppet-facts'
 
   gem 'rubocop', '~> 0.49.0'
-
-  # The various Ruby JSON gems dropped support for Ruby < 2.0 in version 2.0.0
-  if RUBY_VERSION < '2.0'
-    gem 'json', '< 2.0.0'
-    gem 'json_pure', '< 2.0.0'
-  end
 end
