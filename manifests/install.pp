@@ -86,8 +86,8 @@ class traefik::install (
         # Workaround for https://github.com/voxpupuli/puppet-archive/issues/166
         # extract_path not actually used since we're not extracting
         extract_path => '/tmp'
-      }->
-      file {
+      }
+      -> file {
         "${archive_dir}/traefik-${version}/traefik":
           owner => 'root',
           group => 'root',
@@ -111,8 +111,8 @@ class traefik::install (
           group   => 'root',
           mode    => '0644',
           content => template('traefik/traefik.systemd.erb'),
-        }~>
-        exec { 'traefik-systemd-reload':
+        }
+        ~> exec { 'traefik-systemd-reload':
           command     => 'systemctl daemon-reload',
           path        => ['/usr/bin', '/bin', '/usr/sbin'],
           refreshonly => true,
