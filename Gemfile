@@ -13,7 +13,7 @@ group :test do
   gem 'puppetlabs_spec_helper', '~> 1.1.1'
   gem 'rspec-puppet-facts'
 
-  gem 'rubocop', '~> 0.41.0' # Rubocop 0.42.0+ is Ruby >= 2.0.0 only
+  gem 'rubocop', '~> 0.49.0'
 
   # The various Ruby JSON gems dropped support for Ruby < 2.0 in version 2.0.0
   if RUBY_VERSION < '2.0'

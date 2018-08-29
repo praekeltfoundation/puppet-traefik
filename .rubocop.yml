@@ -12,12 +12,17 @@ Style/HashSyntax:
 Style/TrailingCommaInLiteral:
   Enabled: false
 
-Style/SpaceInsideHashLiteralBraces:
+Layout/SpaceInsideHashLiteralBraces:
   EnforcedStyle: no_space
 
 Style/NumericLiterals:
   Enabled: false
 
-# This check errors out on Ruby 1.9.3 on Travis for some reason :-/
 Style/WordArray:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false
+
+Layout/IndentHeredoc:
   Enabled: false
