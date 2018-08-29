@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'toml-rb'
+gem 'toml-rb', '~> 1.0'
 
 group :test do
   gem 'rake'

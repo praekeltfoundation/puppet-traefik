@@ -1,4 +1,4 @@
-require 'toml'
+require 'toml-rb'
 
 module Puppet
   module Parser
@@ -11,7 +11,7 @@ This function takes a hash and outputs serialized TOML.
           raise Puppet::ParseError, 'traefik_toml takes exactly 1 argument'
         end
 
-        return TOML.dump(args[0])
+        return TomlRB.dump(args[0])
       end
     end
   end
