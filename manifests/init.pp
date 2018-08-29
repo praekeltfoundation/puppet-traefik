@@ -75,8 +75,7 @@ class traefik (
 
 ) inherits traefik::params {
   anchor { 'traefik::begin': }
-  ->
-  class { 'traefik::install':
+  -> class { 'traefik::install':
     install_method    => $install_method,
     download_url_base => $download_url_base,
     version           => $version,
@@ -90,18 +89,15 @@ class traefik (
     config_path       => "${config_dir}/${config_file}",
     notify            => Class['traefik::service'],
   }
-  ->
-  class { 'traefik::config':
+  -> class { 'traefik::config':
     config_dir  => $config_dir,
     config_file => $config_file,
     config_hash => $config_hash,
   }
-  ~>
-  class { 'traefik::service':
+  ~> class { 'traefik::service':
     ensure => $service_ensure,
     manage => $service_manage,
     enable => $service_enable,
   }
-  ->
-  anchor { 'traefik::end': }
+  -> anchor { 'traefik::end': }
 }

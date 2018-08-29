@@ -22,8 +22,8 @@ class traefik::config (
     ensure => directory,
     owner  => 'root',
     group  => 'root'
-  }->
-  concat { $config_path:
+  }
+  -> concat { $config_path:
     ensure => present,
     owner  => 'root',
     group  => 'root'
