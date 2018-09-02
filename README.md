@@ -92,6 +92,6 @@ weight = 1
 ```
 
 ## Limitations
-* Currently **only works on Ubuntu 14.04 and Debian 8** (pull requests welcome).
+* Currently **only works on Ubuntu 14.04, 16.04 and Debian 8** (pull requests welcome).
 * Uses the [`toml-rb`](https://rubygems.org/gems/toml-rb) gem to generate config with a parser function. This means that your Puppet server must have the gem correctly installed. See [this page](https://docs.puppet.com/puppetserver/latest/gems.html) for Puppet 4 instructions.
 * There is no validation on config parameters. Everything (and anything) can be specified via hashes.

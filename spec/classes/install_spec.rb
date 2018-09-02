@@ -4,7 +4,7 @@ describe 'traefik::install' do
   on_supported_os.each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }
-      let(:version) { '1.0.3' }
+      let(:version) { '1.1.1' }
       let(:max_open_files) { 16384 }
 
       describe 'with default parameters' do
@@ -75,24 +75,46 @@ describe 'traefik::install' do
           end
 
         elsif facts[:operatingsystem] == 'Ubuntu'
-          it do
-            is_expected.to contain_file('/etc/init/traefik.conf')
-              .with_content(%r{^exec /usr/local/bin/traefik$})
-              .with_content(
-                /^limit nofile #{max_open_files} #{max_open_files}$/
-              )
-              .with_owner('root')
-              .with_group('root')
-              .with_mode('0444')
+
+          if facts[:operatingsystemrelease] == '14.04'
+            it do
+              is_expected.to contain_file('/etc/init/traefik.conf')
+                .with_content(%r{^exec /usr/local/bin/traefik$})
+                .with_content(
+                  /^limit nofile #{max_open_files} #{max_open_files}$/
+                )
+                .with_owner('root')
+                .with_group('root')
+                .with_mode('0444')
+            end
+
+            it do
+              is_expected.to contain_file('/etc/init.d/traefik')
+                .with_ensure('link')
+                .with_target('/lib/init/upstart-job')
+                .with_owner('root')
+                .with_group('root')
+            end
+
+          elsif facts[:operatingsystemrelease] == '16.04'
+            it do
+              is_expected.to contain_file('/lib/systemd/system/traefik.service')
+                .with_content(%r{^ExecStart=/usr/local/bin/traefik$})
+                .with_content(/^LimitNOFILE=#{max_open_files}$/)
+                .with_owner('root')
+                .with_group('root')
+                .with_mode('0644')
+            end
+
+            it do
+              is_expected.to contain_exec('traefik-systemd-reload')
+                .with_command('systemctl daemon-reload')
+                .with_path(['/usr/bin', '/bin', '/usr/sbin'])
+                .with_refreshonly(true)
+            end
+
           end
 
-          it do
-            is_expected.to contain_file('/etc/init.d/traefik')
-              .with_ensure('link')
-              .with_target('/lib/init/upstart-job')
-              .with_owner('root')
-              .with_group('root')
-          end
         end
       end
 
@@ -238,9 +260,16 @@ describe 'traefik::install' do
               .with_content(%r{^ExecStart=/usr/bin/traefik$})
           end
         elsif facts[:operatingsystem] == 'Ubuntu'
-          it do
-            is_expected.to contain_file('/etc/init/traefik.conf')
-              .with_content(%r{^exec /usr/bin/traefik$})
+          if facts[:operatingsystemrelease] == '14.04'
+            it do
+              is_expected.to contain_file('/etc/init/traefik.conf')
+                .with_content(%r{^exec /usr/bin/traefik$})
+            end
+          elsif facts[:operatingsystemrelease] == '16.04'
+            it do
+              is_expected.to contain_file('/lib/systemd/system/traefik.service')
+                .with_content(%r{^ExecStart=/usr/bin/traefik$})
+            end
           end
         end
       end
@@ -270,9 +299,18 @@ describe 'traefik::install' do
               .with_content(/^ExecStart=#{binary} --configFile=#{config_path}$/)
           end
         elsif facts[:operatingsystem] == 'Ubuntu'
-          it do
-            is_expected.to contain_file('/etc/init/traefik.conf')
-              .with_content(/^exec #{binary} --configFile=#{config_path}$/)
+          if facts[:operatingsystemrelease] == '14.04'
+            it do
+              is_expected.to contain_file('/etc/init/traefik.conf')
+                .with_content(/^exec #{binary} --configFile=#{config_path}$/)
+            end
+          elsif facts[:operatingsystemrelease] == '16.04'
+            it do
+              is_expected.to contain_file('/lib/systemd/system/traefik.service')
+                .with_content(
+                  /^ExecStart=#{binary} --configFile=#{config_path}$/
+                )
+            end
           end
         end
       end
@@ -287,11 +325,18 @@ describe 'traefik::install' do
               .with_content(/^LimitNOFILE=#{max_open_files}$/)
           end
         elsif facts[:operatingsystem] == 'Ubuntu'
-          it do
-            is_expected.to contain_file('/etc/init/traefik.conf')
-              .with_content(
-                /^limit nofile #{max_open_files} #{max_open_files}$/
-              )
+          if facts[:operatingsystemrelease] == '14.04'
+            it do
+              is_expected.to contain_file('/etc/init/traefik.conf')
+                .with_content(
+                  /^limit nofile #{max_open_files} #{max_open_files}$/
+                )
+            end
+          elsif facts[:operatingsystemrelease] == '16.04'
+            it do
+              is_expected.to contain_file('/lib/systemd/system/traefik.service')
+                .with_content(/^LimitNOFILE=#{max_open_files}$/)
+            end
           end
         end
       end
